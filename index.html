@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+  </head>
+  <body>
+    <img id="img"/>
+    <p id='msg'></p>
+    <button id='btn'>Start</button>
+    <script>
+     let adbUtil = require('./renderer')
+      // You can also require other files to run in this process
+      
+      var devices = [];
+      adbUtil.trackDevices(devices);
+      
+      document.getElementById('btn').addEventListener('click', function(e){
+        if(devices.length <=0 ){
+          alert('please link a phone.')
+          return;
+        }
+        let id = devices[0].id
+        adbUtil.initMinicap(id, 0, (bytes)=>{
+          let img = document.getElementById('img')
+          img.src = "data:image/png;base64," + Buffer.from(bytes).toString('base64');
+        })
+      })
+    </script>
+  </body>
+</html>
